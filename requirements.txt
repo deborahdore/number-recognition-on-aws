@@ -1,7 +1,6 @@
-numpy
-pandas
-pip
-py4j
 Flask
 pyspark
-requests
+
+pillow
+numpy
+pytesseract

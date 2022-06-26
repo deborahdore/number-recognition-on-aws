@@ -1,11 +1,14 @@
-from flask import Flask, render_template
+import pytesseract
+from flask import Flask, render_template, request
 from pyspark.ml import PipelineModel
 
 from main import load_PySpark
+from src.utils import img_transform, to_dataframe
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 spark = load_PySpark()
 model = PipelineModel.load("../models/best_model")
+pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
 
 
 @app.route('/')
@@ -15,14 +18,18 @@ def home():
 
 @app.route('/', methods=['POST'])
 def predict():
-    '''
-    int_features = [int(x) for x in request.form.values()]
-    final_features = [np.array(int_features)]
-    prediction = model.predict(final_features)
-
-    output = round(prediction[0], 2)
-    '''
-    return render_template('index.html', prediction='ciao')
+    global spark
+    try:
+        img_to_arr = img_transform(request.files['file'])
+        df = to_dataframe(img_to_arr, spark)
+        # TODO
+        # predicted_num = predict_image(df)
+        #return render_template('index.html', prediction=predicted_num)
+    except Exception:
+        # reload spark
+        spark.stop()
+        spark = load_PySpark()
+        return render_template('index.html', prediction='Please upload another picture')
 
 
 if __name__ == "__main__":

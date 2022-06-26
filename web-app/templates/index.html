@@ -48,12 +48,11 @@
     <div class="row" style="height: 200px"></div>
     <div class="row flex-grow-1">
         <div class="col text-center">
-            <form action="/" method="POST">
+            <form enctype="multipart/form-data" action="/" method="POST">
                 <div class="input-group">
-                    <input accept="image/*" class="form-control rounded m-2" id="image"
-                           onchange="preview()" type="file"/>
-                    <button class="btn btn-primary rounded " id="check-button"
-                            style="width: 12%" type="submit">Submit
+                    <input type="FILE" name="file" class="form-control rounded m-2" id="file" onchange="preview()"/>
+                    <button type="submit" class="btn btn-primary rounded " id="check-button"
+                            style="width: 12%">Upload
                     </button>
                 </div>
             </form>
