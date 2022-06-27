@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 import pandas as pd
 from PIL import Image
+from pyspark.sql.types import StructField, IntegerType, StructType
 
 from src.conf import COLUMNS
 
@@ -33,4 +34,10 @@ def img_transform(img):
 
 
 def to_dataframe(array, spark):
-    return spark.createDataFrame(pd.DataFrame([array], columns=COLUMNS))
+    pd_df = pd.DataFrame([array], columns=COLUMNS).astype('int32')
+
+    fields = [StructField(field_name, IntegerType(), False) for field_name in COLUMNS]
+
+    spark_df = spark.createDataFrame(pd_df, schema=StructType(fields))
+    spark_df.show()
+    return spark_df

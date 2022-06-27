@@ -2,12 +2,11 @@ from os import path
 
 from pyspark.ml import PipelineModel
 from pyspark.ml.feature import VectorAssembler
-from pyspark.sql import DataFrame
 
 from src.conf import BEST_MODEL_DIR, COLUMNS
 
 
-def predict_image(input_from_web: DataFrame):
+def predict_image(df):
     if not path.isdir("../" + BEST_MODEL_DIR):
         print("ERORR - not a valid directory")
         raise FileExistsError()
@@ -17,6 +16,6 @@ def predict_image(input_from_web: DataFrame):
     assembler = VectorAssembler(inputCols=COLUMNS,
                                 outputCol="features")
 
-    features = assembler.transform(input_from_web).select("features")
+    features = assembler.transform(df).select("features")
 
-    return model.transform(features)
+    return model.transform(features).select('prediction').collect()[0][0]

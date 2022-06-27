@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from pyspark.ml import PipelineModel
 
 from main import load_PySpark
+from src.predict import predict_image
 from src.utils import img_transform, to_dataframe
 
 app = Flask(__name__, template_folder='templates')
@@ -22,9 +23,8 @@ def predict():
     try:
         img_to_arr = img_transform(request.files['file'])
         df = to_dataframe(img_to_arr, spark)
-        # TODO
-        # predicted_num = predict_image(df)
-        #return render_template('index.html', prediction=predicted_num)
+        predicted_num = int(predict_image(df))
+        return render_template('index.html', prediction=predicted_num)
     except Exception:
         # reload spark
         spark.stop()
