@@ -8,29 +8,48 @@ from src.conf import COLUMNS
 
 
 def crop_image(img):
-    # TODO
-    pass
+    h, w = img.shape
+    if w > h:
+        rm = int((w - h) / 2)
+        cropped = img[:, rm:w - rm]
+
+    else:
+        rm = int((h - w) / 2)
+        cropped = img[rm: h - rm, :]
+
+    # cv2.imwrite("cropped.png", cropped)
+    return cropped
 
 
 def resize_image(img):
-    return cv2.resize(img, (28, 28))
+    resize = cv2.resize(img, (28, 28))
+    # cv2.imwrite("resize.png", resize)
+    return resize
 
 
 def to_BW(img):
     gray = cv2.cvtColor(np.array(img), cv2.COLOR_BGR2GRAY)
-    (thresh, blackAndWhiteImage) = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
-    # cv2.imwrite("photo.jpg", blackAndWhiteImage)
-    return blackAndWhiteImage
+    (thresh, b_and_w_image) = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+
+    # invert colors if number is not white
+    # count white
+    count_b = np.count_nonzero(b_and_w_image == 0)
+    count_w = np.count_nonzero(b_and_w_image == 255)
+
+    if count_w > count_b:
+        b_and_w_image = cv2.bitwise_not(b_and_w_image)
+
+    # cv2.imwrite("photo.jpg", b_and_w_image)
+
+    return b_and_w_image
 
 
 def img_transform(img):
     raw = np.array(Image.open(img))
-    # TODO
-    # crop = crop_image(raw)
-    # also number must be white and background black - invert colors if not the case
-    resize = resize_image(raw)
-    gray = to_BW(resize)
-    return np.array(gray, dtype=np.int32).flatten()
+    gray = to_BW(raw)
+    # crop = crop_image(gray)
+    resize = resize_image(gray)
+    return np.array(resize, dtype=np.int32).flatten()
 
 
 def to_dataframe(array, spark):
