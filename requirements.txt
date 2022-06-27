@@ -1,6 +1,5 @@
-Flask
-pyspark
-
-pillow
-numpy
+Flask==2.1.2
+pyspark==3.3.0
+pillow==9.1.1
+numpy==1.21.6
 pytesseract
