@@ -58,5 +58,4 @@ def to_dataframe(array, spark):
     fields = [StructField(field_name, IntegerType(), False) for field_name in COLUMNS]
 
     spark_df = spark.createDataFrame(pd_df, schema=StructType(fields))
-    spark_df.show()
     return spark_df

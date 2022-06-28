@@ -2,13 +2,14 @@ import pytesseract
 from flask import Flask, render_template, request
 from pyspark.ml import PipelineModel
 
+from application.src.predict import predict_image
+from application.src.utils import img_transform, to_dataframe
 from main import load_PySpark
-from src.predict import predict_image
-from src.utils import img_transform, to_dataframe
 
-app = Flask(__name__, template_folder='templates')
+app = Flask(__name__, template_folder='application/templates', static_folder="application/static")
+
 spark = load_PySpark()
-model = PipelineModel.load("../models/best_model")
+model = PipelineModel.load("models/best_model")
 pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
 
 
@@ -34,4 +35,3 @@ def predict():
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
-    print("Open browser on address http://localhost:5000")
