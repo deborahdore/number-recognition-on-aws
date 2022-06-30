@@ -1,15 +1,17 @@
 import sys
 
+import pandas as pd
 from pyspark.sql import *
-
 from src.evaluate import evaluate_model
 from src.train import train_hypermodel
 
-DATASET_TRAIN = 'dataset/mnist_train.csv'
-DATASET_TEST = 'dataset/mnist_test.csv'
+#DATASET_TRAIN = 'dataset/mnist_train.csv'
+DATASET_TRAIN = 'https://cloud-project-adi.s3.amazonaws.com/mnist_train.csv'
+
+#DATASET_TEST = 'dataset/mnist_test.csv'
+DATASET_TEST = 'https://cloud-project-adi.s3.amazonaws.com/mnist_test.csv'
 
 
-# URL = 'https://cloud-project-adi.s3.amazonaws.com/mnist.csv'
 
 def load_PySpark():
     return SparkSession.builder \
@@ -24,8 +26,8 @@ def load_PySpark():
 if __name__ == '__main__':
 
     spark = load_PySpark()
-    train_df = spark.read.csv(DATASET_TRAIN, inferSchema=True, header=True)
-    test_df = spark.read.csv(DATASET_TEST, inferSchema=True, header=True)
+    test_df = spark.createDataFrame(pd.read_csv(DATASET_TEST))
+    train_df = spark.createDataFrame(pd.read_csv(DATASET_TRAIN))
 
     # modality
     if len(sys.argv) < 2:
