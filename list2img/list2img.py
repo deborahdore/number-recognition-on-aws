@@ -1,7 +1,9 @@
 import math
-import immagini
-import pandas as pd
 import os
+
+import pandas as pd
+
+import immagini
 
 folder = './images'
 image_number = 12000
@@ -14,9 +16,9 @@ for i, entry in df.iterrows():
     for j in range(dim):
         row = []
         for k in range(dim):
-            c = entry[dim*j + k]
-            row.append((c,c,c))
+            c = entry[dim * j + k]
+            row.append((c, c, c))
         img.append(row.copy())
     immagini.save(img, os.path.join(folder, 'img{}.png').format(i))
-    if i == image_number-1:
+    if i == image_number - 1:
         break

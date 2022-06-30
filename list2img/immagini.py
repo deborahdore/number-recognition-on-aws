@@ -3,6 +3,7 @@ Funzioni di utilita' per leggere e salvare una immagine.
 '''
 import png
 
+
 def load(fname):
     """ Carica la immagine PNG dal file fname.
         Torna una lista di liste di pixel.
@@ -16,9 +17,10 @@ def load(fname):
         for line in png_img:
             l = []
             for i in range(0, len(line), 3):
-                l+=[(line[i], line[i+1], line[i+2])]
-            img+=[l]
+                l += [(line[i], line[i + 1], line[i + 2])]
+            img += [l]
         return img
+
 
 def save(img, filename):
     """ Salva la immagine img  nel file filename in formato PNG8.
@@ -26,6 +28,5 @@ def save(img, filename):
         Ogni pixel è una tupla (R, G, B) dei 3 colori.
         Ciascun colore è un intero tra 0 e 255 compresi.
     """
-    pngimg = png.from_array(img,'RGB')
+    pngimg = png.from_array(img, 'RGB')
     pngimg.save(filename)
-
