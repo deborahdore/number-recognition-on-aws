@@ -7,11 +7,8 @@ COPY . .
 
 RUN pip install -r requirements.txt
 
-ENV S3_BUCKET_NAME "cloud-project-adi-2"
-ENV ACCESS_KEY "AKIAZU7SO2WVSUH44Y5X"
-ENV SECRET_KEY "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"
+ENV S3_BUCKET_NAME "number-recognition-s3-bucket"
+ENV ACCESS_KEY "insert-here"
+ENV SECRET_KEY "insert-here"
 
-
-ENTRYPOINT ["python"]
-
-CMD ["main.py"]
+ENTRYPOINT ["python", "main.py"]

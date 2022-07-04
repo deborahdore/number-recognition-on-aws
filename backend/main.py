@@ -9,10 +9,9 @@ from src.train import train_hypermodel
 
 def load_PySpark():
     spark = SparkSession.builder \
-        .config("spark.ui.port", "4050") \
-        .config('spark.executor.memory', '4G') \
-        .config('spark.driver.memory', '45G') \
-        .config('spark.driver.maxResultSize', '10G') \
+        .config('spark.executor.memory', '6G') \
+        .config('spark.driver.memory', '4G') \
+        .config('spark.driver.maxResultSize', '5G') \
         .config('spark.debug.maxToStringFields', '50000') \
         .config('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:3.3.1') \
         .getOrCreate()
@@ -20,12 +19,12 @@ def load_PySpark():
     spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.access.key", '%s' % ACCESS_KEY)
     spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.secret.key", '%s' % SECRET_KEY)
     spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-
     return spark
 
 
 if __name__ == '__main__':
 
+    print("Loading Spark")
     spark = load_PySpark()
     test_df = spark.read.csv(DATASET_TEST, inferSchema=True, header=True)
     train_df = spark.read.csv(DATASET_TRAIN, inferSchema=True, header=True)

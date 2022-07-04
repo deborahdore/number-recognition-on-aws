@@ -11,10 +11,9 @@ app = Flask(__name__, template_folder='./templates', static_folder="./static")
 
 def load_PySpark():
     spark = SparkSession.builder \
-        .config("spark.ui.port", "4050") \
-        .config('spark.executor.memory', '4G') \
-        .config('spark.driver.memory', '45G') \
-        .config('spark.driver.maxResultSize', '10G') \
+        .config('spark.executor.memory', '6G') \
+        .config('spark.driver.memory', '4G') \
+        .config('spark.driver.maxResultSize', '5G') \
         .config('spark.debug.maxToStringFields', '50000') \
         .config('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:3.3.1') \
         .getOrCreate()
