@@ -5,10 +5,8 @@ from pyspark.sql import *
 from src.evaluate import evaluate_model
 from src.train import train_hypermodel
 
-# DATASET_TRAIN = 'dataset/mnist_train.csv'
 DATASET_TRAIN = 's3a://cloud-project-adi/mnist_test.csv'
 
-# DATASET_TEST = 'dataset/mnist_test.csv'
 DATASET_TEST = 's3a://cloud-project-adi/mnist_test.csv'
 
 
