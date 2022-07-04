@@ -4,7 +4,7 @@ import pandas as pd
 from PIL import Image
 from pyspark.sql.types import StructField, IntegerType, StructType
 
-from src.conf import COLUMNS
+from .conf import COLUMNS
 
 
 def crop_image(img):
