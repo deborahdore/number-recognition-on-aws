@@ -2,7 +2,7 @@
 
 1. Go to the EC2 Dashboard
 2. From the menu on the left select _Security Group_
-3. Create new Security Group following the [configurations](security-group.pdf)
+3. Create new Security Group following the [configurations](security_group.pdf)
 4. From the menu on the left select _Launch Templates_
 5. Create new Launch template following the [configurations](Launch%20template%20configuration.pdf)
     1. remember to add the [user data](user-data.sh)
