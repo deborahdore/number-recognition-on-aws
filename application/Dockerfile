@@ -9,7 +9,7 @@ RUN apt-get install ffmpeg libsm6 libxext6  -y
 RUN pip install -r requirements.txt
 
 ENV S3_BUCKET_NAME "number-recognition-on-aws-bucket"
-ENV ACCESS_KEY "xx"
+ENV ACCESS_KEY "xxx"
 ENV SECRET_KEY "xxx"
 
 ENTRYPOINT ["python", "app.py"]

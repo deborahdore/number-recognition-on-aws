@@ -14,3 +14,5 @@
 11. Add Listener for port 5000 and redirect to the Autoscaling group just created
 12. Save Load Balancer DNS name and search it (IT'S HTTP, NOT HTTPS.
     es http://autoscaling-version2-1-1872856581.us-east-1.elb.amazonaws.com/)
+
+

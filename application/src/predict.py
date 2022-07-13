@@ -1,20 +1,12 @@
-from pyspark.ml import PipelineModel
 from pyspark.ml.feature import VectorAssembler
 
-from .conf import BEST_MODEL_DIR, COLUMNS
+from .conf import COLUMNS
 
 
-def predict_image(df):
-    try:
+def predict_image(df, model):
+    assembler = VectorAssembler(inputCols=COLUMNS,
+                                outputCol="features")
 
-        model = PipelineModel.load(BEST_MODEL_DIR)
+    features = assembler.transform(df).select("features")
 
-        assembler = VectorAssembler(inputCols=COLUMNS,
-                                    outputCol="features")
-
-        features = assembler.transform(df).select("features")
-
-        return model.transform(features).select('prediction').collect()[0][0]
-
-    except Exception:
-        raise Exception("Model not found")
+    return model.transform(features).select('prediction').collect()[0][0]

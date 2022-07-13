@@ -4,14 +4,14 @@ from pyspark.ml.classification import LogisticRegression
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.feature import PCA, StandardScaler
 from pyspark.ml.feature import VectorAssembler
-from pyspark.ml.tuning import ParamGridBuilder, TrainValidationSplit
+from pyspark.ml.tuning import ParamGridBuilder, CrossValidator
 from pyspark.sql import *
 
 COLUMNS = ['pixel{:d}'.format(k) for k in range(784)]
 
 S3_BUCKET_NAME = "number-recognition-on-aws-bucket"
-ACCESS_KEY = "xxx"
-SECRET_KEY = "xxx"
+ACCESS_KEY = "XXX"
+SECRET_KEY = "XXX"
 
 BEST_MODEL_DIR = f's3a://{S3_BUCKET_NAME}/models'
 
@@ -21,8 +21,8 @@ DATASET_TEST = f's3a://{S3_BUCKET_NAME}/mnist_test.csv'
 
 def load_PySpark():
     # when executing on amazon EMR
-    spark = SparkSession.builder.getOrCreate()
-    '''
+    # spark = SparkSession.builder.getOrCreate()
+
     # when executing local
 
     spark = SparkSession.builder \
@@ -32,12 +32,15 @@ def load_PySpark():
         .config('spark.debug.maxToStringFields', '50000') \
         .config('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:3.3.1') \
         .getOrCreate()
-    '''
-    spark.sparkContext.setLogLevel("ERROR")
-    spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.access.key", '%s' % ACCESS_KEY)
-    spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.secret.key", '%s' % SECRET_KEY)
 
-    spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+    spark.sparkContext.setLogLevel("ERROR")
+    spark.sparkContext._jsc.hadoopConfiguration().set(
+        "fs.s3a.access.key", '%s' % ACCESS_KEY)
+    spark.sparkContext._jsc.hadoopConfiguration().set(
+        "fs.s3a.secret.key", '%s' % SECRET_KEY)
+
+    spark.sparkContext._jsc.hadoopConfiguration().set(
+        "fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
     return spark
 
 
@@ -82,10 +85,10 @@ def train_hypermodel(train):
         .addGrid(lr.elasticNetParam, [0.0, 0.5, 1.0]) \
         .build()
 
-    tvs = TrainValidationSplit(estimator=lr,
-                               estimatorParamMaps=param_grid,
-                               evaluator=MulticlassClassificationEvaluator(),
-                               trainRatio=0.7)
+    tvs = CrossValidator(estimator=lr,
+                         estimatorParamMaps=param_grid,
+                         evaluator=MulticlassClassificationEvaluator(),
+                         numFolds=5)
 
     pipeline = Pipeline(stages=[scaler, pca_model])
 
@@ -104,7 +107,7 @@ if __name__ == '__main__':
     spark = load_PySpark()
     print("--- SPARK LOADED ---")
 
-    print("--- NOW DOWNLOADING DATASET --- ")
+    print("--- DOWNLOADING DATASET --- ")
     test_df = spark.read.csv(DATASET_TEST, inferSchema=True, header=True)
     train_df = spark.read.csv(DATASET_TRAIN, inferSchema=True, header=True)
 

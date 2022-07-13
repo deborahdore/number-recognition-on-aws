@@ -1,8 +1,9 @@
 import pytesseract
 from flask import Flask, render_template, request
+from pyspark.ml import PipelineModel
 from pyspark.sql import SparkSession
 
-from src.conf import ACCESS_KEY, SECRET_KEY
+from src.conf import ACCESS_KEY, SECRET_KEY, BEST_MODEL_DIR
 from src.predict import predict_image
 from src.utils import img_transform, to_dataframe
 
@@ -26,6 +27,7 @@ def load_PySpark():
 
 
 spark = load_PySpark()
+model = PipelineModel.load(BEST_MODEL_DIR)
 pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
 
 
@@ -40,8 +42,8 @@ def predict():
     try:
         img_to_arr = img_transform(request.files['file'])
         df = to_dataframe(img_to_arr, spark)
-        predicted_num = int(predict_image(df))
-        return render_template('index.html', prediction=predicted_num)
+        predicted_num = int(predict_image(df, model))
+        return render_template('index.html', prediction=f"Your number is: {predicted_num}")
     except Exception:
         # reload spark
         spark.stop()
