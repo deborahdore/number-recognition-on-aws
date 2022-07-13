@@ -28,6 +28,7 @@ sudo grpck
 sudo grpconv
 newgrp docker
 groups
-docker pull deborahdore/number-recognition-on-aws-application
-docker run -d -p 5000:5000 deborahdore/number-recognition-on-aws-application
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 883218126663.dkr.ecr.us-east-1.amazonaws.com
+docker pull 883218126663.dkr.ecr.us-east-1.amazonaws.com/number-recognition-application:latest
+docker run -d -p 5000:5000 883218126663.dkr.ecr.us-east-1.amazonaws.com/number-recognition-application:latest
 --//--

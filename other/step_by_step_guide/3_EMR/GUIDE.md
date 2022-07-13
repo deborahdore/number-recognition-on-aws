@@ -2,7 +2,7 @@
 
 1. Go to AWS Emr
 2. Select _create cluster_
-3. Select one type of storage and follow the instructions
+3. Follow the [configuration](m5.xlarge/conf) instructions
 5. Wait for the cluster to be in _Waiting mode_ (it may take up to 15 minutes)
 6. Change Master's node security rules:
     1. Go to the _Summary_ page of the cluster

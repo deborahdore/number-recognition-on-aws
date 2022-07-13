@@ -1,3 +1,0 @@
-- 1.6 minutes elapsed time
-- 4 instances created
-- Little consumption of memory

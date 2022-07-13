@@ -1,3 +1,0 @@
-- 4 of 5 total instances allocated
-- 15 minutes task running time
-- Little consumption of memory
