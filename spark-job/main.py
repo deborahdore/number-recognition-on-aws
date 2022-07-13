@@ -10,10 +10,11 @@ from pyspark.sql import *
 COLUMNS = ['pixel{:d}'.format(k) for k in range(784)]
 
 S3_BUCKET_NAME = "number-recognition-on-aws-bucket"
-ACCESS_KEY = "XXX"
-SECRET_KEY = "XXX"
+ACCESS_KEY = "AKIAZU7SO2WVUO7B7FSY"
+SECRET_KEY = "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"
 
-BEST_MODEL_DIR = f's3a://{S3_BUCKET_NAME}/models'
+#BEST_MODEL_DIR = f's3a://{S3_BUCKET_NAME}/models'
+BEST_MODEL_DIR = "../other/models"
 
 DATASET_TRAIN = f's3a://{S3_BUCKET_NAME}/mnist_train.csv'
 DATASET_TEST = f's3a://{S3_BUCKET_NAME}/mnist_test.csv'
