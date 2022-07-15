@@ -1,4 +1,5 @@
 from pyspark.ml import Pipeline
+from pyspark.ml import PipelineModel
 from pyspark.ml.classification import LogisticRegression
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.feature import PCA, StandardScaler
@@ -8,9 +9,9 @@ from pyspark.sql import *
 
 COLUMNS = ['pixel{:d}'.format(k) for k in range(784)]
 
-S3_BUCKET_NAME = "number-recognition-bucket-b1"
-ACCESS_KEY = "AKIAUGHEIUPRBM5R2KWV"
-SECRET_KEY = "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"
+S3_BUCKET_NAME = "number-recognition-on-aws-bucket"
+ACCESS_KEY = "XXX"
+SECRET_KEY = "XXX"
 
 BEST_MODEL_DIR = f's3a://{S3_BUCKET_NAME}/models'
 
