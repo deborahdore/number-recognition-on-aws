@@ -1,5 +1,4 @@
 from pyspark.ml import Pipeline
-from pyspark.ml import PipelineModel
 from pyspark.ml.classification import LogisticRegression
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 from pyspark.ml.feature import PCA, StandardScaler
@@ -10,8 +9,8 @@ from pyspark.sql import *
 COLUMNS = ['pixel{:d}'.format(k) for k in range(784)]
 
 S3_BUCKET_NAME = "number-recognition-on-aws-bucket"
-ACCESS_KEY = "XXX"
-SECRET_KEY = "XXX"
+ACCESS_KEY = "AKIAUGHEIUPROXUTAFGV"
+SECRET_KEY = "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"
 
 BEST_MODEL_DIR = f's3a://{S3_BUCKET_NAME}/models'
 
@@ -34,10 +33,9 @@ def load_PySpark():
         .getOrCreate()
     '''
     spark.sparkContext.setLogLevel("ERROR")
-    spark.sparkContext._jsc.hadoopConfiguration().set(
-        "fs.s3a.access.key", '%s' % ACCESS_KEY)
-    spark.sparkContext._jsc.hadoopConfiguration().set(
-        "fs.s3a.secret.key", '%s' % SECRET_KEY)
+    spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.access.key", '%s' % ACCESS_KEY)
+    spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.secret.key", '%s' % SECRET_KEY)
+    spark.sparkContext._jsc.hadoopConfiguration().setInt("mapred.max.split.size", 16777216)
 
     spark.sparkContext._jsc.hadoopConfiguration().set(
         "fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
@@ -120,4 +118,5 @@ if __name__ == '__main__':
     print("--- MODEL TRAINING ---")
     best_model_trained = train_hypermodel(train_df)
 
-    print(f"--- MODEL EVALUATION: {evaluate_model(test_df, best_model_trained)}")
+    print(
+        f"--- MODEL EVALUATION: {evaluate_model(test_df, best_model_trained)}")
