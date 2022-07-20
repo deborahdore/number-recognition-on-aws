@@ -9,8 +9,8 @@ from pyspark.sql import *
 COLUMNS = ['pixel{:d}'.format(k) for k in range(784)]
 
 S3_BUCKET_NAME = "number-recognition-on-aws-bucket"
-ACCESS_KEY = "AKIAUGHEIUPROXUTAFGV"
-SECRET_KEY = "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"
+ACCESS_KEY = "xxx"
+SECRET_KEY = "xxx"
 
 BEST_MODEL_DIR = f's3a://{S3_BUCKET_NAME}/models'
 
@@ -22,16 +22,6 @@ def load_PySpark():
     # when executing on amazon EMR
     spark = SparkSession.builder.getOrCreate()
 
-    # when executing local
-    '''
-    spark = SparkSession.builder \
-        .config('spark.executor.memory', '6G') \
-        .config('spark.driver.memory', '4G') \
-        .config('spark.driver.maxResultSize', '5G') \
-        .config('spark.debug.maxToStringFields', '50000') \
-        .config('spark.jars.packages', 'org.apache.hadoop:hadoop-aws:3.3.1') \
-        .getOrCreate()
-    '''
     spark.sparkContext.setLogLevel("ERROR")
     spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.access.key", '%s' % ACCESS_KEY)
     spark.sparkContext._jsc.hadoopConfiguration().set("fs.s3a.secret.key", '%s' % SECRET_KEY)

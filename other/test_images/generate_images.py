@@ -1,4 +1,5 @@
 from PIL import Image
+
 size = 28
 increase = 70
 n_images = 100
